@@ -18,23 +18,68 @@ class GaussianGenerativeModel:
 
     # TODO: Implement this method!
     def fit(self, X, Y):
-        self.X = X
-        self.Y = Y
+        self.X=X
+        self.Y=Y
+        N=len(X)
+        K=3
+        self.mu=[0,0,0]
+        for i in range (0, K):
+            numerator=0
+            denomenator=0
+            for j in range(0,N):
+                if Y[j]==i:
+                    numerator=numerator+X[j]
+                    denomenator=denomenator+1
+            if denomenator>0:
+                self.mu[i]=numerator/denomenator
+        if self.isSharedCovariance:
+            self.E=0
+            for i in range (0, K):
+                for j in range(0,N):
+                    if Y[j]==i:
+                        print((X[j]-self.mu[i])*(np.array(X[j]-self.mu[i]).reshape(len(X[j]),1)))
+                        self.E=self.E+(X[j]-self.mu[i])*(np.array(X[j]-self.mu[i]).reshape(len(X[j]),1))/N
+                        print(self.E)
+            print(self.E,"asdfa")
+        else:
+            self.E=[0,0,0]
+            for i in range (0, K):
+                numerator=0
+                denomenator=0
+                for j in range(0,N):
+                    if Y[j]==i:
+#                        print((np.array(X[j]-self.mu[i]).reshape(len(X[j]),1)))
+                        numerator=numerator+(X[j]-self.mu[i])*(np.array(X[j]-self.mu[i]).reshape(len(X[j]),1))
+                        denomenator=denomenator+1
+                if denomenator>0:
+                    self.E[i]=numerator/denomenator
+                    print(self.E[i])
+
         return
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        Y = []
-        for x in X_to_predict:
-            val = 0
-            if x[1] > 4:
-                val += 1
-            if x[1] > 6:
-                val += 1
-            Y.append(val)
-        return np.array(Y)
+        Y=[0]*len(X_to_predict)
+        for i in range(0,len(X_to_predict)):
+            est_lik=[0,0,0]
+            if self.isSharedCovariance:
+                for k in range(0,len(self.mu)):
+                    est_lik[k]=multivariate_normal.pdf(X_to_predict[i], mean=self.mu[k], cov=self.E)
+#                    est_lik[k]=(X_to_predict[i]-self.mu[k]).reshape(1,len(X_to_predict[i]))*self.E^{-1}*(X_to_predict[i]-self.mu[k])
+                maxind=np.argmax(est_lik)
+                Y[i]=maxind
+            else:
+                for k in range(0,len(self.mu)):
+                    est_lik[k]=multivariate_normal.pdf(X_to_predict[i], mean=self.mu[k], cov=self.E[k])
+#                    est_lik[k]=pow(np.linalg.det(self.E[k]),-1/2)*np.exp(0.5*((X_to_predict[i]-self.mu[k]).reshape(1,len(X_to_predict[i])))*self.E[k]^{-1})
+                maxind=np.argmax(est_lik)
+                Y[i]=maxind
+        return(np.array(Y))
+                
+                
+            
 
     # Do not modify this method!
     def visualize(self, output_file, width=3, show_charts=False):

@@ -112,7 +112,19 @@ Show that:
 \end{enumerate}
 \end{problem}
 \subsection*{Solution}
+1) Since exp(z) is non-negative, and thus $\sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \}$ is non-negative, the output vector is non-negative. Since exp(z) is an addend in $\sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \}$, and other addends are non-negative, the value of these vectors is at most 1. \\
 
+2) Since the sum of all possible exp(z) is just $\sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \}$, the sum of all the output vectors is 1.\\
+
+3) For all z, $\sigma(z)$ has $\frac{1}{\sum_i\exp(z_i)}$ in it, so what determines the value of $\sigma(z)$ is exp(z). Since exp(z) increases with the  value of z, Softmax preserves order.\\
+
+4) When $j\neq k$, $\frac{\partial y_k}{\partial a_j}=-exp(a_k)(\sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \})^{-2}exp(a_j)=y_k(-y_j)=y_k(I_{kj}-y_j)$\\
+When $j=k$, $\frac{\partial y_k}{\partial a_j}=exp(a_k)(\sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \})^{-1}-exp(a_k)(\sum_{k'=1}^K \exp\{ \boldw_{k'}^{\trans}\boldx_n \})^{-2}exp(a_j)=y_k(I_{kj}-y_j)$\\
+Thus $\frac{\partial y_k}{\partial a_j}=y_k(I_{kj}-y_j)$\\
+
+5) Since $t_{nk}$=0 whenever $n\neq k$, the sum in 4.108 is actually the sum of N terms, each of the form ln$y_{nl}$ where l satisfies $t_{nl}=1$.\\
+$\frac{\partial ln y_{nl}}{\partial j}=\frac{1}{y_{nl}} \frac{\partial y_{nl}}{\partial a_{j}}\frac{\partial {a_j}}{\partial w_{j}}=\frac{1}{y_{nl}} y_{nl}(t_{nj}-y_{j})\phi_n=(y_{nj}-t_{nj})\phi_n$\\
+Thus 4.109 holds.
 
 
 %\subsection*{2. Mooooar matrix calculus [10 pts]}
@@ -178,7 +190,26 @@ $X^{-T} := (X^{-1})^{-T} = (X^{T})^{-1}$
  \end{align*}
  \end{problem}
 \subsection*{Solution}
-
+1) For any particular k, $P(\{\phi_n, {\bf t}_n \} | C_k )=0$ except when $t_{nk}=1$, where its value would be $\pi_k \mathbb{P}(\phi|\mathcal{C}_k)$. \\
+Thus the likelihood would be $\prod^N_{n=1} \prod^K_{k=1} \{\pi_k P(\phi|C_k)\}^{t_{nk}}$\\
+The log-likelihood would be $\sum^N_{n=1}\sum^K_{k=1} t_{nk}(log(\pi_k)+log(P(\phi|C_k)))$\\
+\\
+2)Let's find the maximum of $\sum^N_{n=1} \sum^K_{k=1} t_{nk}(log(\pi_k)+log(P(\phi|C_k)))+\sigma(\sum_k \pi_i-1)$\\
+Take the derivative with regard to $\pi_k$, we get $\sum^N_1 \frac{t_{nk}}{\pi_k}+\lambda$\\
+Thus $\lambda \pi_k=-\sum^N_1 t_{nk}$\\
+Summing over k, we get $\lambda=-N$\\
+Thus $\hat{\pi_k}=\frac{\sum^N_1 t_{nk}}{N}$\\
+\\
+3) The likelihood is $\prod^K_{k=1} \prod^N_{n=1} \{(2\pi)^{-\frac{k}{2}}|\sum|^{-\frac{1}{2}}exp(-\frac{1}{2}(\phi_n - \vec{\mu_k}^{T}\sum^{-1}(\phi_n-\vec{\mu_k}))\}^{t_{nk}}$\\
+Thus for a specific vector $\mu_k$, the log likelihood is $log(|\sum |^{-\frac{1}{2}}) \sum^N_{n=1}t_{nk} (-\frac{1}{2}(\phi_n - \vec{\mu_k}^{T}\sum^{-1}(\phi_n-\vec{\mu_k}))+C_2$, where $C_1$ and $C_2$ are constants.\\
+The gradient, therefore, is $log(|\sum |^{-\frac{1}{2}})(\sum^{-1}-(\sum^{-1})^T)\sum^N_{n=1}-\frac{1}{2}t_{nk}(\phi_n-\vec{\mu_k})^T$\\
+\\
+4) Set the result of 3) to zero, and we'll get $\sum^N_{n=1}t_{nk}(\phi_n-\vec{\mu_k})^T=0$\\
+\\Therefore $\hat{\mu_k}=\frac{\sum^N_{n=1}t_{nk}\phi_n}{N_k}$ where $N_k$ is $\sum^N_{n=1}t_{nk}$\\
+5) The log likelihood is $\sum^K_{k=1} \sum^N_{n=1} t_{nk} (C+ln(|\sum|^{-\frac{1}{2}})+(-\frac{1}{2})(\phi_n - \vec{\mu_k}^{T}\sum^{-1}(\phi_n-\vec{\mu_k}))\}$\\
+Thus the gradient is $-\frac{1}{2}\sum^K_{k=1} \sum^N_{n=1} t_{nk}(-\frac{1}{2}\sum^{-T}(\phi_n-\vec{\mu_k})^T\sum^{-1}(\phi_n-\vec{\mu_k})+ln(|\sum |^{-\frac{1}{2}})(-\sum^{-T}(\phi_n-\vec{\mu_k})(\phi_n-\vec{\mu_k})^T\sum^{-T})$\\
+\\
+6) $\sum=\sum^N_{k=1}\sum^K_{k=1}\frac{1}{N}t_{nk}(\phi_n-\mu_k)(\phi_n-\mu_k)^T$
 
 \newpage
 \subsection*{3. Classifying Fruit [15pts]}
@@ -240,6 +271,13 @@ The classes you implement follow the same pattern as scikit-learn, so they shoul
 \end{problem}
 
 \subsection*{Solution}
+\includegraphics{logistic_regression_result}\\
+Logistic Regression\\
+\\
+\includegraphics{generative_result_separate_covariances}\\
+Generative With Separate Covariances\\
+\includegraphics{logistic_regression_result}\\
+Generative With Same Covariances
 
 
 
