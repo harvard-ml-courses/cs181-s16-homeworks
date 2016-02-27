@@ -1,4 +1,3 @@
-
 from scipy.stats import multivariate_normal
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,10 +5,6 @@ import matplotlib.colors as c
 import pandas as pd
 from numpy.linalg import inv
 from numpy.linalg import det
-from scipy.spatial.distance import mahalanobis
-import scipy as sp
-
-isSharedCovariance=False
 
 # Please implement the fit and predict methods of this class. You can add additional private methods
 # by beginning them with two underscores. It may look like the __dummyPrivateMethod below.
@@ -28,6 +23,7 @@ class GaussianGenerativeModel:
     def fit(self, X, Y):
         self.X = X
         self.Y = Y
+    
         N=int(X.shape[0])
         tn = pd.DataFrame(0,index=range(N),columns=['C0','C1','C2'])
         tn.loc[Y==0,'C0']=1
@@ -50,21 +46,21 @@ class GaussianGenerativeModel:
         X2=X2[X2 != 0]
         X2=np.reshape(X2,(2,N2))
         
-        MU0=X0.mean(axis=1)
-        MU1=X1.mean(axis=1)
-        MU2=X2.mean(axis=1)
+        MU0=X0.mean(axis=0)
+        MU1=X1.mean(axis=0)
+        MU2=X2.mean(axis=0)
         
-        SIGMA0=np.cov(X0)
-        SIGMA1=np.cov(X1)
-        SIGMA2=np.cov(X2)
+        SIGMA0=np.cov(X0.T)
+        SIGMA1=np.cov(X1.T)
+        SIGMA2=np.cov(X2.T)
         
         PI0_MLE=N0/float(N)
         PI1_MLE=N1/float(N)
         PI2_MLE=N2/float(N)
         
-        X0s=X0.T-MU0
-        X1s=X1.T-MU1
-        X2s=X2.T-MU2
+        X0s=X0-MU0
+        X1s=X1-MU1
+        X2s=X2-MU2
         SIGMA0_MLE=(1/float(N0))*X0s.T.dot(X0s)
         SIGMA1_MLE=(1/float(N1))*X1s.T.dot(X1s)
         SIGMA2_MLE=(1/float(N2))*X2s.T.dot(X2s)
@@ -79,7 +75,7 @@ class GaussianGenerativeModel:
         SIGMA1DET=det(SIGMA1_MLE)
         SIGMA2DET=det(SIGMA2_MLE)
         
-        W00=-0.5*(MU0.T).dot(SIGMAINV).dot(MU0)+PI0_MLE
+        W00=-0.5*(MU0).dot(SIGMAINV).dot(MU0.T)+PI0_MLE
         W10=-0.5*(MU1.T).dot(SIGMAINV).dot(MU1)+PI1_MLE
         W20=-0.5*(MU2.T).dot(SIGMAINV).dot(MU2)+PI2_MLE
         
@@ -87,13 +83,6 @@ class GaussianGenerativeModel:
         W1=np.dot(SIGMAINV,MU1)
         W2=np.dot(SIGMAINV,MU2)
 
-        U00=-0.5*(MU0.T).dot(SIGMA0INV).dot(MU0)+PI0_MLE
-        U10=-0.5*(MU1.T).dot(SIGMA1INV).dot(MU1)+PI1_MLE
-        U20=-0.5*(MU2.T).dot(SIGMA2INV).dot(MU2)+PI2_MLE
-
-        U0=np.dot(SIGMA0INV,MU0)
-        U1=np.dot(SIGMA1INV,MU1)
-        U2=np.dot(SIGMA2INV,MU2)
 
         V20=-0.5*SIGMA0INV
         V10=SIGMA0INV.dot(MU0)
@@ -110,7 +99,6 @@ class GaussianGenerativeModel:
         if isSharedCovariance==True:
             return W00, W10, W20, W0, W1, W2
         else:
-            #return U00, U10, U20, U0, U1, U2
             return V20, V10, V00, V21, V11, V01, V22, V12, V02
 
     # TODO: Implement this method!
@@ -122,20 +110,13 @@ class GaussianGenerativeModel:
             A0=(W0.T).dot(X_to_predict.T)+W00
             A1=(W1.T).dot(X_to_predict.T)+W10
             A2=(W2.T).dot(X_to_predict.T)+W20
-            #X_to_predict=X        
+        
         else:
-            #U00, U10, U20, U0, U1, U2 = nb2.fit(X,Y)       
-            #A0=(U0.T).dot(X_to_predict.T)+U00
-            #A1=(U1.T).dot(X_to_predict.T)+U10
-            #A2=(U2.T).dot(X_to_predict.T)+U20
-
-            V20, V10, V00, V21, V11, V01, V22, V12, V02 = nb1.fit(X,Y)
-            A0=np.sum(np.dot(X_to_predict, V20) * X_to_predict, 1)+(V10.T).dot(X_to_predict.T)+V00
-            A1=np.sum(np.dot(X_to_predict, V21) * X_to_predict, 1)+(V11.T).dot(X_to_predict.T)+V01
-            A2=np.sum(np.dot(X_to_predict, V22) * X_to_predict, 1)+(V12.T).dot(X_to_predict.T)+V02
-            #A2=X_to_predict.dot(V22).dot(X_to_predict.T)+(V12.T).dot(X_to_predict.T)+V02
-            #np.sum(np.dot(X, SIGMA0INV) * X, 1)  Mahalanobis distance
-
+            V20, V10, V00, V21, V11, V01, V22, V12, V02 = nb2.fit(X,Y)
+            A0=X_to_predict.dot(V20).dot(X_to_predict.T)+(V10.T).dot(X_to_predict.T)+V00
+            A1=X_to_predict.dot(V21).dot(X_to_predict.T)+(V11.T).dot(X_to_predict.T)+V01
+            A2=X_to_predict.dot(V22).dot(X_to_predict.T)+(V12.T).dot(X_to_predict.T)+V02
+ 
         Z0=np.exp(A0)/(np.exp(A0)+np.exp(A1)+np.exp(A2))
         Z1=np.exp(A1)/(np.exp(A0)+np.exp(A1)+np.exp(A2))
         Z2=np.exp(A2)/(np.exp(A1)+np.exp(A1)+np.exp(A2))       
@@ -145,6 +126,7 @@ class GaussianGenerativeModel:
             
         return Z
     
+
     # Do not modify this method!
     def visualize(self, output_file, width=3, show_charts=False):
         X = self.X
@@ -173,4 +155,3 @@ class GaussianGenerativeModel:
         plt.savefig(output_file)
         if show_charts:
             plt.show()
-
