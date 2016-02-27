@@ -23,13 +23,13 @@ df = pd.read_csv("fruit.csv")
 X = df[['width', 'height']].values
 Y = (df['fruit'] - 1).values
 
-nb1 = GaussianGenerativeModel(isSharedCovariance=False)
-nb1.fit(X,Y)
-nb1.visualize("generative_result_separate_covariances.png")
-
-nb2 = GaussianGenerativeModel(isSharedCovariance=True)
-nb2.fit(X,Y)
-nb2.visualize("generative_result_shared_covariances.png")
+#nb1 = GaussianGenerativeModel(isSharedCovariance=False)
+#nb1.fit(X,Y)
+#nb1.visualize("generative_result_separate_covariances.png")
+#
+#nb2 = GaussianGenerativeModel(isSharedCovariance=True)
+#nb2.fit(X,Y)
+#nb2.visualize("generative_result_shared_covariances.png")
 
 lr = LogisticRegression(eta=eta, lambda_parameter=lambda_parameter)
 lr.fit(X,Y)

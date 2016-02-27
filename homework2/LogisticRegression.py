@@ -22,44 +22,45 @@ class LogisticRegression:
     def fit(self, X, C):
         self.X=X
         self.C=C
-        self.w=[[0]*len(X[1]),[0]*len(X[1]),[0]*len(X[1])]
-        self.w1=[[0]*len(X[1]),[0]*len(X[1]),[0]*len(X[1])]
+        self.w=np.array([[1.]*len(X[1]),[1.]*len(X[1]),[1.]*len(X[1])])
+        self.w1=np.array([[1.]*len(X[1]),[1.]*len(X[1]),[1.]*len(X[1])])
         K=3
-        i=0
-        while i<10:
-            i=i+1
+        cont=0
+        while cont<5000:
+            cont=cont+1
+            print(cont)
             self.w=self.w1
-            print(self.w,"1")
             for k in range (0,K):
                 grad=0
-                for n in range(0,len(X)):
+                for n in range(0,len(X[0])):
                     den=0
-                    for i in range(0,k):
-                        n=(np.array(self.w[i]).reshape(2,1))
-                        den=den+np.exp((np.array(self.w[i]).reshape(len(self.w[i]),1))*X[n])
+                    for i in range(0,K):
+                        den=den+np.exp(self.w[i].dot(X[n].reshape(len(X[n]),1)))
+    #                    print(den,n,k)
                     if C[n]==k:
-                        print(np.array(self.w[k])*(X[n].reshape(len(self.w[k]),1)))       
-                        grad=grad+((np.exp(np.array(self.w[k]).reshape(len(self.w[k]),1)*X[n])/den)-1)*X[n]
+                        grad=grad+((np.exp(self.w[k].dot(X[n].reshape(len(X[n]),1)))/den)-1)*X[n]
                     else:
-                        grad=grad+(np.exp(np.array(self.w[k]).reshape(len(self.w[k]),1)*X[n])/den)*X[n]   
-                print(self.w1,"2")
-                print(self.eta*grad)
-                self.w1[k]=self.w[k]-self.eta*grad
-                print(self.w1,"3")
+                        grad=grad+(np.exp(self.w[k].dot(X[n].reshape(len(X[n]),1)))/den)*X[n]
+#                print(self.eta*grad)
+#                print(self.w[k])
+#                print(self.w1[k],"w1k prior")
+                self.w1[k]-=self.eta*grad
+                print(self.w1[k],"w1k posterior")
+    #                print(self.w,self.w1,"2")
         return
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        Y=[]
+        Y=[0]*len(X_to_predict)
         for n in range(0,len(X_to_predict)):
             lik=[0,0,0]
             for k in range(0,len(self.w1)):
                 lik[k]=np.array(self.w1[k]).reshape(len(self.w1[k]),1)*X_to_predict[n]
             maxind=np.argmax(lik)
             Y[n]=maxind
-        return Y
+        return (np.array(Y))
 
     def visualize(self, output_file, width=2, show_charts=False):
         X = self.X

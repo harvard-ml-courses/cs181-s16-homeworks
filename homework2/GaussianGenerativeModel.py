@@ -32,6 +32,7 @@ class GaussianGenerativeModel:
                     denomenator=denomenator+1
             if denomenator>0:
                 self.mu[i]=numerator/denomenator
+        print(self.mu)
         if self.isSharedCovariance:
             self.E=0
             for i in range (0, K):
@@ -40,7 +41,6 @@ class GaussianGenerativeModel:
                         print((X[j]-self.mu[i])*(np.array(X[j]-self.mu[i]).reshape(len(X[j]),1)))
                         self.E=self.E+(X[j]-self.mu[i])*(np.array(X[j]-self.mu[i]).reshape(len(X[j]),1))/N
                         print(self.E)
-            print(self.E,"asdfa")
         else:
             self.E=[0,0,0]
             for i in range (0, K):
