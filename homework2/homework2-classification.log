@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.2.23)  27 FEB 2016 16:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/W32TeX) (preloaded format=pdflatex 2016.2.23)  27 FEB 2016 16:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1189,16 +1189,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 193--213
  []
 
 [5]
-
-LaTeX Warning: Reference `fig:fruit' on page 6 undefined on input line 217.
-
-
 Overfull \hbox (13.27403pt too wide) in paragraph at lines 216--224
 \OT1/pcr/m/n/10 / / homepages . inf . ed . ac . uk / imurray2 / teaching / oran
 ges _ and _ lemons/$[][]\OT1/ppl/m/n/10 . We have made a slightly
  []
 
-<fruit.pdf, id=56, 303.1325pt x 338.26375pt>
+<fruit.pdf, id=57, 303.1325pt x 338.26375pt>
 File: fruit.pdf Graphic file (type pdf)
  <use fruit.pdf>
 Package pdftex.def Info: fruit.pdf used on input line 234.
@@ -1215,7 +1211,7 @@ File: omsppl.fd
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 243.
  [6 <./fruit.pdf>]
-<logistic_regression_result.png, id=78, 433.62pt x 289.08pt>
+<logistic_regression_result.png, id=79, 433.62pt x 289.08pt>
 File: logistic_regression_result.png Graphic file (type png)
 
 <use logistic_regression_result.png>
@@ -1223,7 +1219,7 @@ Package pdftex.def Info: logistic_regression_result.png used on input line 274.
 
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
 
-<generative_result_separate_covariances.png, id=80, 433.62pt x 289.08pt>
+<generative_result_separate_covariances.png, id=81, 433.62pt x 289.08pt>
 File: generative_result_separate_covariances.png Graphic file (type png)
 
 <use generative_result_separate_covariances.png>
@@ -1256,18 +1252,11 @@ Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 295.
 Package rerunfilecheck Info: File `homework2-classification.out' has not change
 d.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
  ) 
 Here is how much of TeX's memory you used:
  28167 strings out of 493033
  525955 string characters out of 6137754
- 587916 words of memory out of 5000000
+ 588140 words of memory out of 5000000
  31182 multiletter control sequences out of 15000+600000
  32874 words of font info for 96 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1285,10 +1274,10 @@ w/courier/ucrr8a.pfb><d:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplb8
 a.pfb><d:/texlive/2015/texmf-dist/fonts/type1/urw/palatino/uplbi8a.pfb><d:/texl
 ive/2015/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><d:/texlive/2015/texmf-
 dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on homework2-classification.pdf (11 pages, 167573 bytes).
+Output written on homework2-classification.pdf (11 pages, 167255 bytes).
 PDF statistics:
- 165 PDF objects out of 1000 (max. 8388607)
- 129 compressed objects within 2 object streams
+ 166 PDF objects out of 1000 (max. 8388607)
+ 130 compressed objects within 2 object streams
  37 named destinations out of 1000 (max. 500000)
  28 words of extra memory for PDF output out of 10000 (max. 10000000)
 
