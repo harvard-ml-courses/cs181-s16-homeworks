@@ -236,12 +236,12 @@ long as it is organized.
 \end{problem}
 \subsection*{Solution}
 
-We implemented the K-means algorithm on the data set. Since the algorithm converges to a solution and stops improving I tweaked the algorithm so that it stops as soon as the loss function converged to a minimum. We gain computational time this way. On the chart below we see the loss decreases strictly in function of the iterations. It converges in average in around 50 steps for K=10.\\
+We implemented the K-means algorithm on the data set. Since the algorithm converges to a solution and stops improving I tweaked the algorithm so that it stops as soon as the loss function converged to a minimum. We gain computational time this way. On the chart below we see the loss decreases strictly in function of the iterations. It converges in average in around 40 steps for K=10.\\
 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=8cm]{sumnorm100.png}
-\caption{An example of convergence in 58 iterations}
+%\caption{}
 \end{center}
 \end{figure}
 
@@ -366,7 +366,7 @@ Since we are working with digits it made sense to start with K=10. Results were 
 
 \newpage
 
-We finish with the K++ initialization. Below you will find the 10 images that will be used for the initialization of the K-mean algo. We ran it for K=10. We notice several '3' in this example but after a few iterations the algorithm lead to a clustering similar to what a simple K-mean would have given. Since the initialization provides already very "different" images in input, the clustering is faster and lead to results at least as good as the simple version. We notice a convergence in average in around 35 steps.\\
+We finish with the K++ initialization. Below you will find the 10 images that will be used for the initialization of the K-mean algo. We ran it for K=10. We notice several '3' in this example but after a few iterations the algorithm lead to a clustering similar to what a simple K-mean would have given. Since the initialization provides already very "different" images in input, the clustering is faster and lead to results at least as good as the simple version.\\
 
 \begin{figure}[htp]
   \centering
@@ -386,10 +386,23 @@ We finish with the K++ initialization. Below you will find the 10 images that wi
 \end{figure}
 
 
+Are the results wildly different for different restarts and/or different $K$?\\
+No results are relatively similar.\\
+
+Plot the K-means objective function as a function of iteration and verify that
+it never increases.\\
+
+done. see above.\\
+
+Finally, implement K-means++ and see if gives you more satisfying
+initializations (and final results) for K-means. Explain your findings.
+
+
+
 
 \newpage
 \begin{problem}[Calibration, 1pt]
-Approximately how long did this homework take you to complete? 12h
+Approximately how long did this homework take you to complete? 10h
 \end{problem}
 
 
