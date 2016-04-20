@@ -43,17 +43,16 @@ LDAClassifier.print_topics()
 
 
 opti=[]
-num_topics=20
-num_iter=10
+num_topics=10
+num_iter=30
 D=text_data[len(text_data)-1][0].astype('int')  #number of docs
-t0=random.sample(range(1, 100), num_topics)
+t0=random.sample(range(1, 100), 10)
 t1=[float(i) for i in t0]  
 theta=[i/sum(t1) for i in t1]  
-#b0=np.random.random((len(word_dict_lines), num_topics))
-#b1=b0/b0.sum(0)
-#beta=pd.DataFrame(b1,index=word_dict_lines,columns=range(num_topics))
-beta=np.random.dirichlet([1]*len(word_dict_lines),size=num_topics) #.transpose()
-beta=pd.DataFrame(beta.T,index=word_dict_lines,columns=range(num_topics))
+
+b0=np.random.random((len(word_dict_lines), num_topics))
+b1=b0/b0.sum(0)
+beta=pd.DataFrame(b1,index=word_dict_lines,columns=range(num_topics))
 beta['word_id']=range(len(beta))
 
 df_text_data=pd.DataFrame(text_data,columns=['doc_id','word_id','count'])
@@ -70,18 +69,13 @@ for j in range(num_iter):
     start=time.time()
     #E step
     df_doc=df_text_data.merge(beta,on='word_id',how='left')
-    #for i in range(num_topics):
-    #    df_doc[i]=df_doc[i]**df_doc['count']
-    #df_q=pd.pivot_table(df_doc,index='doc_id',aggfunc=np.prod)
-    for i in range(num_topics):
-        df_doc[i]=np.log(df_doc[i])*df_doc['count']
+    for i in range(10):
+        df_doc[i]=df_doc[i]*df_doc['count']
     df_q=pd.pivot_table(df_doc,index='doc_id',aggfunc=np.sum)
-    for i in range(num_topics):
-        df_doc[i]=np.exp(df_doc[i])
     df_q=df_q.drop(['count','word_id'],1)
     df_q=df_q*theta
     df_q=df_q.div(df_q.sum(1),0)
-
+    
     #M-stetp
     theta=df_q.sum(0)/D
     df_q['doc_id']=df_q.index
@@ -110,16 +104,11 @@ for j in range(num_iter):
     print j, round(time.time()-start,0)
 
 
-plt.plot(opti[2:])
+plt.plot(opti)
 
 opti
 
-for i in range(num_topics):
+for i in range(10):
     k0=int(beta[i].argmax())
     print word_dict_lines[k0]
 
-ccc=beta[0].values
-plt.plot(ccc)
-
-beta.sum(0)
-sum(theta)

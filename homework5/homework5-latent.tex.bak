@@ -30,8 +30,6 @@
 \usepackage{common}
 \usepackage{bm}
 \usepackage{enumitem}
-\usepackage{caption}
-\usepackage{subcaption}
 
 \usepackage[mmddyyyy,hhmmss]{datetime}
 
@@ -111,7 +109,7 @@ $ \displaystyle q(z_{kd}) \propto \theta_k \prod_{i=1}^{N_d} \beta_{ki}^{w_{id}}
 We then normalize and get: \\
 
 
-$ \displaystyle q(z_{d}) = \Bigg( \frac{\theta_k \prod_{i=1}^{N_d} \beta_{ki}^{w_{id}}}{\sum_{k=1}^K \theta_k \prod_{i=1}^{N_d} \beta_{ki}^{w_{id}}} \Bigg)_{k=1...K}$
+$$ \displaystyle q(z_{d}) = \Bigg( \frac{\theta_k \prod_{i=1}^{N_d} \beta_{ki}^{w_{id}}}{\sum_{k=1}^K \theta_k \prod_{i=1}^{N_d} \beta_{ki}^{w_{id}}} \Bigg)_{k=1...K}$$
 
 
 
@@ -136,12 +134,12 @@ a- In this 'Maximization' step, we suppose $\gamma$ given (from the 'Expectation
 $\displaystyle  \mathbb{E}_z \big[ \ln p(\{z_d,\boldw_d\}^D_{d=1}\given\btheta, \{\bbeta_k\}^K_{k=1}) \big]= \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \ln p(\{z_d,\boldw_d\}\given\btheta, \{\bbeta_k\}^K_{k=1}) $\\
 
 
-$\displaystyle  \mathbb{E}_z \big[ \log p(\{z_d,\boldw_d\}^D_{d=1}\given\btheta, \{\bbeta_k\}^K_{k=1}) \big]= \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big[ \ln \theta_k + \ln \Gamma(N_d+1) - \sum_{i=1}^{N_d} \ln \Gamma(w_{id}+1) +\sum_{v=1}^V w_{vd} \ln \beta_{kv} \Big] $\\
+$\displaystyle  \mathbb{E}_z \big[ \log p(\{z_d,\boldw_d\}^D_{d=1}\given\btheta, \{\bbeta_k\}^K_{k=1}) \big]= \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big[ \ln \theta_k + \sum_{v=1}^V w_{vd} \ln \beta_{kv} \Big] $\\
 
 
 b - We derive the previous expression by $\theta_k$ including the Lagrangian from the constraint: $\sum \theta_k = 1$ \\
 
-$\displaystyle  \frac{\partial}{\partial \theta_k} \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big[ \ln \theta_k + \ln \Gamma(N_d+1) - \sum_{i=1}^{N_d} \ln \Gamma(w_{id}+1) +\sum_{v=1}^V w_{vd} \ln \beta_{kv} +\lambda (1-\sum_{k=1}^K \theta_k )\Big]=0$\\
+$\displaystyle  \frac{\partial}{\partial \theta_k} \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big[ \ln \theta_k + \sum_{v=1}^V w_{vd} \ln \beta_{kv} +\lambda (1-\sum_{k=1}^K \theta_k )\Big]=0$\\
 
 $\displaystyle  \frac{\partial}{\partial \theta_k} \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big[ \ln \theta_k +\lambda (1-\sum_{k'=1}^K \theta_k' )\Big]=0$\\
 
@@ -178,7 +176,7 @@ c- We want to derive the expected log likelihood with respect to $\beta_{kv}$.\\
 
 We add the Lagrangian for the constraint: $\sum_{v=1}^V \beta_{kv}=1$ \\
 
-$\displaystyle \frac{\partial}{\partial \beta_{kv}} \Big[ \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big( \ln \theta_k + \ln \Gamma(N_d+1) - \sum_{i=1}^{N_d} \ln \Gamma(w_{id}+1)+ \sum_{v=1}^V w_{vw} \ln \beta_{kv} +\lambda (1-\sum_{v=1}^V \beta_{kv} ) \Big) \Big] = 0$\\
+$\displaystyle \frac{\partial}{\partial \beta_{kv}} \Big[ \sum_{d=1}^D \sum_{k=1}^K \gamma_{dk} \Big( \ln \theta_k + \sum_{v=1}^V w_{vw} \ln \beta_{kv} +\lambda (1-\sum_{v=1}^V \beta_{kv} ) \Big) \Big] = 0$\\
 
 $\displaystyle \sum_{d=1}^D \gamma_{dk} (\frac{w_{vd}}{\beta_{kv}}-\lambda)=0   $\\
 
@@ -239,35 +237,9 @@ $$ [\text{doc\_id, word\_id, count}]$$
 \end{problem}
 \subsection*{Solution}
 
-After an extensive use of Pandas' pivot\_table and merge functions, I was able to get an iteration (step E, step M and computation of the expected complete data log likelihood) under 14 seconds for K=10 and 23 for K=20. \\
+After an extensive use of Pandas' pivot\_table and merge functions, I was able to get an iteration (step E, step M and computation of the expected complete data log likelihood) under 15 seconds. \\
 
-I have initialized theta randomly and used a Dirichelet distribution to initialize beta.\\
-
-I had to use a $\exp$ and a $\ln$ function to compute the $\gamma_{dk}$ matrix to avoid Python rounding up to zero when multiplying powers of probabilities $(\prod_{i=1}^{N_d} \beta_{ki}^{w_{id}})$.\\
-
-
-
-\begin{figure}
-\centering
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.5\linewidth]{theta_initialization.png}
-  \caption{Theta initialization for K=10}
-  %\label{fig:sub1}
-\end{subfigure}%
-\begin{subfigure}{\textwidth}
-  \centering
-  \includegraphics[width=0.5\linewidth]{beta_initialization.png}
-  \caption{Initialization of a vector beta}
-  %\label{fig:sub2}
-\end{subfigure}
-%\caption{A figure with two subfigures}
-\label{fig:test}
-\end{figure}
-
-My loss function converges and never increases but unfortunately I have noticed that after a few iterations my matrix beta converges towards a matrix where all $beta_k$ are the almost the same. Which means that the most 'likely' word of a topic is always the same one, the word with the most counts across documents: word number 23314: 'researched'. \\
-
-All of this makes this model useless.\\
+I have initialized theta and beta randomly. My loss function converges and never increases but unfortunately I have noticed that after a few iterations my matrix beta converges towards a matrix where all $beta_v$ are the same for all $k$. Which means that the most 'likely' word of a topic is always the same one. \\
 
 \begin{figure}[htb]
 \begin{center}
@@ -279,7 +251,7 @@ All of this makes this model useless.\\
 
 \newpage
 \begin{problem}[Calibration, 1pt]
-Approximately how long did this homework take you to complete? 35h
+Approximately how long did this homework take you to complete? 24h
 \end{problem}
 
 
