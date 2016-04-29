@@ -381,7 +381,6 @@ These classes will allow the final submissions to have consistency. There will a
 irrelevant values at the moment. You may need to modify these to get your methods to work.
 The classes you implement follow the same pattern as scikit-learn, so they should be familiar to you. The distribution code currently outputs nonsense predictions just to show what the high-level interface should be, so you should completely remove the given predict() implementations and replace them with your implementations.
 
-
 \begin{itemize}
 \item The visualize() method for each classifier will save a plot that will show the decision boundaries. Please include those in this assignment.
 \item Which classifiers model the distributions well?
@@ -389,44 +388,25 @@ The classes you implement follow the same pattern as scikit-learn, so they shoul
 \end{itemize}
 \end{problem}
 
-
-\subsection*{Solution}
-
-We started with a Logistic classification implemented with a Gradient descent algorithm. We used the gradient's formula from the 5th question of problem 1: $ \nabla_{w_j} E(w_1,...,w_K)=\sum_{n=1}^N  \phi_n ( y_{nj} -t_{nj} )$\\
-
-We then used the following model for the Generative Gaussian with shared variance:\\
-
-$p(\mathcal{C}_k|x)=\frac{exp(a_k)}{\sum_j exp(a_k)}$ with $a_k(x)=\mathbf{w}_k^T x + w_{k0}$, $\mathbf{w}_k= \Sigma^{-1} \mu_k$ and $w_{k0}=-\frac{1}{2} \mu_k^T \Sigma^{-1} \mu_k + \ln p(\mathcal{C}_k)$\\
-
-We finally looked at the case with different variances with the following model: 
-
-$p(\mathcal{C}_k|x)=\frac{exp(a_k)}{\sum_j exp(a_k)}$ with $a_k(x)= x^T \mathbf{W}_{k2}^T x + \mathbf{w}_{k1}^T x + w_{k0}$ \footnote{$x^T \mathbf{W}_{k2}^T x$ is the Mahalanobis distance}\\
-
-$\mathbf{W}_{k2}=-\frac{1}{2} \Sigma_k^{-1}$, $\mathbf{w}_{k1}= \Sigma_k^{-1} \mu_k$ and $w_{0k}=-\frac{1}{2} \mu_k^T \Sigma_k^{-1} \mu_k -\frac{1}{2} \ln |\Sigma_k| +\ln \mathbb{P}(\mathcal{C}_k)$
-
-The Generative Gaussian with separate variances fits the best thanks to the quadratic equation in $x$.\\ 
-
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{logistic_regression_result.png}
+\includegraphics[width=0.5\textwidth]{logistic_regression_result.png}
 \caption{Logistic Regression with Gradient Descent}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.7\textwidth]{generative_result_shared_covariances.png}
-\caption{Generative Gaussian with Shared Covariances}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{generative_result_separate_covariances.png}
-\caption{Generative Gaussian with Separated Covariances}
+\includegraphics[width=0.5\textwidth]{generative_result_shared_covariances.png}
+\caption{Generative Gaussian with Shared Variance}
 \end{figure}
 
 
-\newpage
 
+
+
+
+
+\subsection*{Solution}
 
 
 
@@ -436,9 +416,8 @@ The Generative Gaussian with separate variances fits the best thanks to the quad
 
 
 \newpage
-
 \subsection*{Calibration [1pt]}
-Approximately how long did this homework take you to complete? 10h
+Approximately how long did this homework take you to complete?
 
 
 \end{document}
