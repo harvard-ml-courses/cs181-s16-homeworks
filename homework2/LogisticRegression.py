@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as c
 from scipy.misc import logsumexp
+from sklearn import linear_model, datasets
 
 # Please implement the fit and predict methods of this class. You can add additional private methods
 # by beginning them with two underscores. It may look like the __dummyPrivateMethod below.
@@ -19,23 +20,47 @@ class LogisticRegression:
 
     # TODO: Implement this method!
     def fit(self, X, C):
-        self.X = X
-        self.C = C
+        self.X=X
+        self.C=C
+        self.w=np.array([[1.]*len(X[1]),[1.]*len(X[1]),[1.]*len(X[1])])
+        self.w1=np.array([[1.]*len(X[1]),[1.]*len(X[1]),[1.]*len(X[1])])
+        K=3
+        cont=0
+        while cont<5000:
+            cont=cont+1
+            print(cont)
+            self.w=self.w1
+            for k in range (0,K):
+                grad=0
+                for n in range(0,len(X[0])):
+                    den=0
+                    for i in range(0,K):
+                        den=den+np.exp(self.w[i].dot(X[n].reshape(len(X[n]),1)))
+    #                    print(den,n,k)
+                    if C[n]==k:
+                        grad=grad+((np.exp(self.w[k].dot(X[n].reshape(len(X[n]),1)))/den)-1)*X[n]
+                    else:
+                        grad=grad+(np.exp(self.w[k].dot(X[n].reshape(len(X[n]),1)))/den)*X[n]
+#                print(self.eta*grad)
+#                print(self.w[k])
+#                print(self.w1[k],"w1k prior")
+                self.w1[k]-=self.eta*grad
+                print(self.w1[k],"w1k posterior")
+    #                print(self.w,self.w1,"2")
         return
 
     # TODO: Implement this method!
     def predict(self, X_to_predict):
         # The code in this method should be removed and replaced! We included it just so that the distribution code
         # is runnable and produces a (currently meaningless) visualization.
-        Y = []
-        for x in X_to_predict:
-            val = 0
-            if x[1] > 4:
-                val += 1
-            if x[1] > 6:
-                val += 1
-            Y.append(val)
-        return np.array(Y)
+        Y=[0]*len(X_to_predict)
+        for n in range(0,len(X_to_predict)):
+            lik=[0,0,0]
+            for k in range(0,len(self.w1)):
+                lik[k]=np.array(self.w1[k]).reshape(len(self.w1[k]),1)*X_to_predict[n]
+            maxind=np.argmax(lik)
+            Y[n]=maxind
+        return (np.array(Y))
 
     def visualize(self, output_file, width=2, show_charts=False):
         X = self.X
@@ -59,7 +84,7 @@ class LogisticRegression:
 
         # Visualize them.
         plt.figure()
-        plt.pcolormesh(xx,yy,Y_hat, cmap=cMap)
+        plt.pcolormesh(xx,yy, Y_hat, cmap=cMap)
         plt.scatter(X[:, 0], X[:, 1], c=self.C, cmap=cMap)
         plt.savefig(output_file)
         if show_charts:
