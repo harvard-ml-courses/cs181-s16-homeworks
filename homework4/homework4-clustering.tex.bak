@@ -236,16 +236,16 @@ long as it is organized.
 \end{problem}
 \subsection*{Solution}
 
-We implemented the K-means algorithm on the data set. Since the algorithm converges to a solution and stops improving I tweaked the algorithm so that it stops as soon as the loss function converged to a minimum. We gain computational time this way. On the chart below we see the loss decreases strictly in function of the iterations. It converges in average in around 50 steps for K=10.\\
+We implemented the K-means algorithm on the data set. Since the algorithm converges to a solution and stops improving I tweaked the algorithm so that it stops as soon as the loss function converged to a minimum. We gain computational time this way. On the char below we see the loss function in function of the iterations. It converges in average in around 40 steps for K=10.\\
 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=8cm]{sumnorm100.png}
-\caption{An example of convergence in 58 iterations}
+%\caption{}
 \end{center}
 \end{figure}
 
-Since we are working with digits it made sense to start with K=10. Results were 'encouraging'. Unfortunately, the algorithm was not able to truly differentiate a 4 and a 5. Here are the mean images for the 10 clusters. Those mean images do not belong to the sample. Each image is define by 28*28 pixels and each pixel is a number for its darkness. The mean image is computed by taking the average of darkness for the 28*28 pixels. Since they are not actual handwritten image but averages, they are blurry. In the next pages, you will also find mean images for K=15 and 20. Finally, For K=10, we got 10 representative images for the first two clusters. We computed the distance to the nearest cluster and selected the 10 closest.\\
+Since we are working with digits it made sense to start with K=10. Results were 'encouraging'. Unfortunately, the algorithm was not able to truly differentiate a 4 and a 5. Here are the mean images for the 10 clusters. Those mean images do not belong to the sample. Each image is define by 28*28 pixels and each pixel is a number for its darkness. The mean image is computed by taking the average of darkness for the 28*28 pixels. Since they are not actual handwritten image but averages, they are blurry.\\
 
 \begin{figure}[htp]
   \centering
@@ -266,6 +266,8 @@ Since we are working with digits it made sense to start with K=10. Results were 
 \end{figure}
 
 \newpage
+
+Here is what we get for a simple K-mean clustering with K=15.\\
 
 \begin{figure}[htp]
   \centering
@@ -292,6 +294,8 @@ Since we are working with digits it made sense to start with K=10. Results were 
 \end{figure}
 
 \newpage
+
+Here is what we get for a simple K-mean clustering with K=20.\\
 
 \begin{figure}[htp]
   \centering
@@ -326,70 +330,84 @@ Since we are working with digits it made sense to start with K=10. Results were 
 
 \newpage
 
+For K=10, we got 10 representative images for the first two clusters. We computed the distance to the nearest cluster and selected the 10 closest.
 
 \begin{figure}[htp]
   \centering
-  \label{figur}\caption{10 most representative images for the cluster '0'}
+  \label{figur}\caption{10 most representative images for the cluster '1'}
 
-  \subfloat[]{\label{figur:11}\includegraphics[width=35mm]{represent0_1}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{represent0_2}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{represent0_3}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{represent0_4}}
-  \subfloat[]{\label{figur:14}\includegraphics[width=35mm]{represent0_5}}
+  \subfloat[]{\label{figur:11}\includegraphics[width=40mm]{represent0_1}}
+  \subfloat[]{\label{figur:1}\includegraphics[width=40mm]{represent0_2}}
+  \subfloat[]{\label{figur:1}\includegraphics[width=40mm]{represent0_3}}
+  \subfloat[]{\label{figur:1}\includegraphics[width=40mm]{represent0_4}}
+  \subfloat[]{\label{figur:14}\includegraphics[width=40mm]{represent0_5}}
   \\
-  \subfloat[]{\label{figur:10}\includegraphics[width=35mm]{represent0_6}}
-  \subfloat[]{\label{figur:7}\includegraphics[width=35mm]{represent0_7}}
-  \subfloat[]{\label{figur:3}\includegraphics[width=35mm]{represent0_8}}
-  \subfloat[]{\label{figur:2}\includegraphics[width=35mm]{represent0_9}}
-  \subfloat[]{\label{figur:13}\includegraphics[width=35mm]{represent0_10}}
+  \subfloat[]{\label{figur:10}\includegraphics[width=40mm]{represent0_6}}
+  \subfloat[]{\label{figur:7}\includegraphics[width=40mm]{represent0_7}}
+  \subfloat[]{\label{figur:3}\includegraphics[width=40mm]{represent0_8}}
+  \subfloat[]{\label{figur:2}\includegraphics[width=40mm]{represent0_9}}
+  \subfloat[]{\label{figur:13}\includegraphics[width=40mm]{represent0_10}}
 \end{figure}
 
 \begin{figure}[htp]
   \centering
   \label{figur}\caption{10 most representative images for the cluster '1'}
 
-  \subfloat[]{\label{figur:11}\includegraphics[width=35mm]{represent1_1}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{represent1_2}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{represent1_3}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{represent1_4}}
-  \subfloat[]{\label{figur:14}\includegraphics[width=35mm]{represent1_5}}
+  \subfloat[]{\label{figur:11}\includegraphics[width=40mm]{represent1_1}}
+  \subfloat[]{\label{figur:1}\includegraphics[width=40mm]{represent1_2}}
+  \subfloat[]{\label{figur:1}\includegraphics[width=40mm]{represent1_3}}
+  \subfloat[]{\label{figur:1}\includegraphics[width=40mm]{represent1_4}}
+  \subfloat[]{\label{figur:14}\includegraphics[width=40mm]{represent1_5}}
   \\
-  \subfloat[]{\label{figur:10}\includegraphics[width=35mm]{represent1_6}}
-  \subfloat[]{\label{figur:7}\includegraphics[width=35mm]{represent1_7}}
-  \subfloat[]{\label{figur:3}\includegraphics[width=35mm]{represent1_8}}
-  \subfloat[]{\label{figur:2}\includegraphics[width=35mm]{represent1_9}}
-  \subfloat[]{\label{figur:13}\includegraphics[width=35mm]{represent1_10}}
+  \subfloat[]{\label{figur:10}\includegraphics[width=40mm]{represent1_6}}
+  \subfloat[]{\label{figur:7}\includegraphics[width=40mm]{represent1_7}}
+  \subfloat[]{\label{figur:3}\includegraphics[width=40mm]{represent1_8}}
+  \subfloat[]{\label{figur:2}\includegraphics[width=40mm]{represent1_9}}
+  \subfloat[]{\label{figur:13}\includegraphics[width=40mm]{represent1_10}}
 \end{figure}
 
 
 
 
-\newpage
+The given code loads the images into your environment as a 6000x28x28 array.
+Implement K-means clustering on it for a few different values of $K$, and show
+results from the fit. Show the mean images for each class, and by selecting a
+few representative images for each class. You should explain how you selected
+these representative images. To render an image, use the numpy imshow function,
+which the distribution code gives an example of. Use squared norm as your
+distance metric. You should feel free to explore other metrics along with
+squared norm if you are interested in seeing the effects of using those. Also,
+your code should use the entire provided 6000-image dataset (which, by the way,
+is only 10\% of the full MNIST set).
 
-We finish with the K++ initialization. Below you will find the 10 images that will be used for the initialization of the K-mean algo. We ran it for K=10. We notice several '3' in this example but after a few iterations the algorithm lead to a clustering similar to what a simple K-mean would have given. Since the initialization provides already very "different" images in input, the clustering is faster and lead to results at least as good as the simple version. We notice a convergence in average in around 35 steps.\\
+Are the results wildly different for different restarts and/or different $K$?
+Plot the K-means objective function as a function of iteration and verify that
+it never increases.
 
-\begin{figure}[htp]
-  \centering
-  \label{figur}\caption{10 images for the initialization of the K-mean algo (K-Mean++)}
+Finally, implement K-means++ and see if gives you more satisfying
+initializations (and final results) for K-means. Explain your findings.
 
-  \subfloat[]{\label{figur:11}\includegraphics[width=35mm]{plusplus_1}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{plusplus_2}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{plusplus_3}}
-  \subfloat[]{\label{figur:1}\includegraphics[width=35mm]{plusplus_4}}
-  \subfloat[]{\label{figur:14}\includegraphics[width=35mm]{plusplus_5}}
-  \\
-  \subfloat[]{\label{figur:10}\includegraphics[width=35mm]{plusplus_6}}
-  \subfloat[]{\label{figur:7}\includegraphics[width=35mm]{plusplus_7}}
-  \subfloat[]{\label{figur:3}\includegraphics[width=35mm]{plusplus_8}}
-  \subfloat[]{\label{figur:2}\includegraphics[width=35mm]{plusplus_9}}
-  \subfloat[]{\label{figur:13}\includegraphics[width=35mm]{plusplus_0}}
-\end{figure}
+As in past problem sets, please include your plots in this document. There may
+be tons of plots for this problem, so feel free to take up multiple pages, as
+long as it is organized.
 
 
+
+
+%Figure out how to load it into your environment and turn it into a set of
+%vectors.  Run K-Means on it for a few different~$K$ and show some results from
+%the fit.  What do the mean images look like?  What are some representative
+%images from each of the clusters?  Are the results wildly different for
+%different restarts and/or different~$K$?  Plot the K-Means objective function
+%(distortion measure) as a function of iteration and verify that it never
+%increases.
+
+%\subsection*{4. Implement K-Means++ [4 pts]} mplement K-Means++ and see if it
+%gives you more satisfying initializations for K-Means.  Explain your findings.
 
 \newpage
 \begin{problem}[Calibration, 1pt]
-Approximately how long did this homework take you to complete? 12h
+Approximately how long did this homework take you to complete?
 \end{problem}
 
 
